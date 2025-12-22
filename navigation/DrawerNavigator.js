@@ -43,6 +43,8 @@ import CustomDrawerContent from './CustomDrawerContent';
 import HomeScreen from '../screens/HomeScreen';
 import { Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -72,6 +74,8 @@ export default function DrawerNavigator() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Login" component={LoginScreen} />
+      <Drawer.Screen name="Signup" component={SignupScreen} />
     </Drawer.Navigator>
   );
 }

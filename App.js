@@ -24,12 +24,15 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 //import DrawerNavigator from './navigation/DrawerNavigator';
+import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
