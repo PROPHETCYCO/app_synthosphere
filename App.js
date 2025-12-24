@@ -22,7 +22,7 @@
 
 // App.js
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 //import DrawerNavigator from './navigation/DrawerNavigator';
 import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
@@ -30,7 +30,7 @@ import RootNavigator from './navigation/RootNavigator';
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
+      <NavigationContainer theme={DefaultTheme}>
         <RootNavigator />
       </NavigationContainer>
     </AuthProvider>

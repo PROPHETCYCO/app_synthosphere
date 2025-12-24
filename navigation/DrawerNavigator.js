@@ -45,6 +45,7 @@ import { Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
+import PackagesScreen from '../screens/PackagesScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -74,6 +75,7 @@ export default function DrawerNavigator() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Packages" component={PackagesScreen} options={{ title: 'Packages' }} />
       <Drawer.Screen name="Login" component={LoginScreen} />
       <Drawer.Screen name="Signup" component={SignupScreen} />
     </Drawer.Navigator>

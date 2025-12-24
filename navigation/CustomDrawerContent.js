@@ -16,7 +16,7 @@
 //   return (
 //     <View style={styles.root}>
 //     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
-      
+
 //       {/* HEADER — DISPLAY ONLY */}
 //       <View style={styles.header}>
 //         <Image
@@ -78,42 +78,35 @@
 //   );
 // }
 
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import { Ionicons } from '@expo/vector-icons';
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function CustomDrawerContent(props) {
   const { user, isAuthenticated, logout } = useContext(AuthContext);
 
   return (
     <View style={styles.root}>
-      <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
-        
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.container}
+      >
         {/* HEADER */}
         <View style={styles.header}>
           <Image
-            source={require('../assets/userphoto.png')}
+            source={require("../assets/userphoto.png")}
             style={styles.avatar}
           />
 
           <View>
             <Text style={styles.name}>
-              {isAuthenticated ? user.name : 'Guest'}
+              {isAuthenticated ? user.name : "Guest"}
             </Text>
 
             <Text style={styles.statusText}>
-              {isAuthenticated ? `ID: ${user.userId}` : 'Not logged in'}
+              {isAuthenticated ? `ID: ${user.userId}` : "Not logged in"}
             </Text>
           </View>
         </View>
@@ -122,10 +115,16 @@ export default function CustomDrawerContent(props) {
         <View style={styles.menu}>
           <DrawerItem
             label="Home"
+            icon={({ size }) => <Ionicons name="home-outline" size={size} />}
+            onPress={() => props.navigation.navigate("Home")}
+          />
+
+          <DrawerItem
+            label="Packages"
             icon={({ size }) => (
-              <Ionicons name="home-outline" size={size} />
+              <Ionicons name="pricetags-outline" size={size} />
             )}
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => props.navigation.navigate("Packages")}
           />
         </View>
       </DrawerContentScrollView>
@@ -136,7 +135,7 @@ export default function CustomDrawerContent(props) {
           <>
             <Pressable
               style={[styles.button, styles.login]}
-              onPress={() => props.navigation.navigate('Login')}
+              onPress={() => props.navigation.navigate("Login")}
             >
               <Ionicons name="log-in-outline" size={18} color="#fff" />
               <Text style={styles.buttonText}>Login</Text>
@@ -144,17 +143,14 @@ export default function CustomDrawerContent(props) {
 
             <Pressable
               style={[styles.button, styles.signup]}
-              onPress={() => props.navigation.navigate('Signup')}
+              onPress={() => props.navigation.navigate("Signup")}
             >
               <Ionicons name="person-add-outline" size={18} color="#fff" />
               <Text style={styles.buttonText}>Signup</Text>
             </Pressable>
           </>
         ) : (
-          <Pressable
-            style={[styles.button, styles.logout]}
-            onPress={logout}
-          >
+          <Pressable style={[styles.button, styles.logout]} onPress={logout}>
             <Ionicons name="log-out-outline" size={18} color="#fff" />
             <Text style={styles.buttonText}>Sign out</Text>
           </Pressable>
@@ -165,16 +161,16 @@ export default function CustomDrawerContent(props) {
 }
 
 const styles = StyleSheet.create({
-    root: {
+  root: {
     flex: 1,
   },
   container: { flex: 1 },
   header: {
-    backgroundColor: '#1e3272ff',
+    backgroundColor: "#1e3272ff",
     padding: 20,
     marginHorizontal: -16,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 20,
   },
   avatar: {
@@ -184,66 +180,63 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   name: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   statusRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 4,
   },
   statusDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#ff4d4f',
+    backgroundColor: "#ff4d4f",
     marginRight: 6,
   },
   statusText: {
-    color: '#ccc',
+    color: "#ccc",
     fontSize: 12,
   },
   menu: {
     marginTop: 8,
   },
 
-footer: {
-    flexDirection: 'row',
+  footer: {
+    flexDirection: "row",
     padding: 12,
     paddingBottom: 24,
     borderTopWidth: 1,
     borderRadius: 14,
-    borderTopColor: '#d5d6d8ff',
-    backgroundColor: '#fff',
+    borderTopColor: "#d5d6d8ff",
+    backgroundColor: "#fff",
   },
   button: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 12,
     borderRadius: 8,
     marginHorizontal: 4,
     gap: 6,
   },
   login: {
-    backgroundColor: '#2563EB',
+    backgroundColor: "#2563EB",
   },
   signup: {
-    backgroundColor: '#0EA5E9',
+    backgroundColor: "#0EA5E9",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
   },
   logout: {
-  backgroundColor: '#ef4444',
-},
+    backgroundColor: "#ef4444",
+  },
 });
-
-
-
 
 // navigation/CustomDrawerContent.js
 // import {
@@ -259,7 +252,7 @@ footer: {
 // export default function CustomDrawerContent(props) {
 //   return (
 //     <View style={styles.root}>
-      
+
 //       {/* SCROLLABLE CONTENT */}
 //       <DrawerContentScrollView
 //         {...props}
