@@ -93,7 +93,7 @@ export default function CustomDrawerContent(props) {
         {...props}
         contentContainerStyle={styles.container}
       >
-        {/* HEADER */}
+        {/* ---------- HEADER ---------- */}
         <View style={styles.header}>
           <Image
             source={require("../assets/userphoto.png")}
@@ -102,34 +102,66 @@ export default function CustomDrawerContent(props) {
 
           <View>
             <Text style={styles.name}>
-              {isAuthenticated ? user.name : "Guest"}
+              {isAuthenticated ? user?.name : "Guest"}
             </Text>
 
             <Text style={styles.statusText}>
-              {isAuthenticated ? `ID: ${user.userId}` : "Not logged in"}
+              {isAuthenticated ? `ID: ${user?.userId}` : "Not logged in"}
             </Text>
           </View>
         </View>
 
-        {/* MENU */}
+        {/* ---------- MENU ---------- */}
         <View style={styles.menu}>
+          {/* Home - always visible */}
           <DrawerItem
             label="Home"
-            icon={({ size }) => <Ionicons name="home-outline" size={size} />}
+            icon={({ size }) => (
+              <Ionicons name="home-outline" size={size} />
+            )}
             onPress={() => props.navigation.navigate("Home")}
           />
 
-          <DrawerItem
-            label="Packages"
-            icon={({ size }) => (
-              <Ionicons name="pricetags-outline" size={size} />
-            )}
-            onPress={() => props.navigation.navigate("Packages")}
-          />
+          {/* 🔒 Protected routes */}
+          {isAuthenticated && (
+            <>
+              <DrawerItem
+                label="Packages"
+                icon={({ size }) => (
+                  <Ionicons name="pricetags-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("Packages")}
+              />
+
+              <DrawerItem
+                label="Dashboard"
+                icon={({ size }) => (
+                  <Ionicons name="grid-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("Dashboard")}
+              />
+
+              <DrawerItem
+                label="KYC"
+                icon={({ size }) => (
+                  <Ionicons name="document-text-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("Kyc")}
+              />
+
+              <DrawerItem
+                label="Genealogy"
+                icon={({ size }) => (
+                  <Ionicons name="git-network-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("Genealogy")}
+              />
+            </>
+          )}
         </View>
       </DrawerContentScrollView>
 
-      {/* FOOTER */}
+      {/* ---------- FOOTER ---------- */}
       <View style={styles.footer}>
         {!isAuthenticated ? (
           <>
@@ -150,7 +182,10 @@ export default function CustomDrawerContent(props) {
             </Pressable>
           </>
         ) : (
-          <Pressable style={[styles.button, styles.logout]} onPress={logout}>
+          <Pressable
+            style={[styles.button, styles.logout]}
+            onPress={logout}
+          >
             <Ionicons name="log-out-outline" size={18} color="#fff" />
             <Text style={styles.buttonText}>Sign out</Text>
           </Pressable>
@@ -160,11 +195,14 @@ export default function CustomDrawerContent(props) {
   );
 }
 
+/* ---------- Styles ---------- */
 const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+  },
   header: {
     backgroundColor: "#1e3272ff",
     padding: 20,
@@ -184,18 +222,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  statusRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 4,
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#ff4d4f",
-    marginRight: 6,
-  },
   statusText: {
     color: "#ccc",
     fontSize: 12,
@@ -203,13 +229,11 @@ const styles = StyleSheet.create({
   menu: {
     marginTop: 8,
   },
-
   footer: {
     flexDirection: "row",
     padding: 12,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderRadius: 14,
     borderTopColor: "#d5d6d8ff",
     backgroundColor: "#fff",
   },
@@ -229,12 +253,12 @@ const styles = StyleSheet.create({
   signup: {
     backgroundColor: "#0EA5E9",
   },
+  logout: {
+    backgroundColor: "#ef4444",
+  },
   buttonText: {
     color: "#fff",
     fontWeight: "600",
-  },
-  logout: {
-    backgroundColor: "#ef4444",
   },
 });
 
