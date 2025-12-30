@@ -57,6 +57,95 @@ const courses = [
             'Premium Trading Strategies',
         ],
     },
+     {
+      name: "Teacher Course",
+      price: " 11800 ",
+       subcription: "One year",
+      points: "10000",
+      paymentUrl: "https://rzp.io/rzp/0tfCXyMC",
+      features: [
+        "A To Z Advance Crypto Knowledge",
+
+        "Pro Buy/Sell On Centralized Exchange",
+
+        "Advance Crypto SIP Guide",
+
+        "Advance Portfolio Management",
+
+        "Spot & Future Trading Call (6 Months)",
+
+        "Advance Fundamental Analysis, Technical Analysis",
+
+        "Online 27 Videos",
+
+        "Risk Management Strategy",
+
+        "Regular PNL Strategy",
+
+        "Basic Liquidation Strategy",
+        "Gem Coin Finding Strategy",
+        "Premium Future Trading Strategy",
+
+        "Premium Portfolio Management Strategy",
+
+        "Five Long-Term Holding Coins Name",
+
+        "Trading Fund Management Strategy",
+
+        "A To Z Advance Fundamental Analysis, Technical Analysis",
+
+        "Whales Wallet Tracking",
+
+        "Crypto Taxation",
+
+        "Crypto Rules & Knowledge",
+
+        "DEX & CEX Arbitrage Model",
+      ],
+    },
+       {
+      name: "Pro Teacher Course",
+      price: " 59000",
+      subcription: "One year",
+      points: "25000",
+      paymentUrl: "https://rzp.io/rzp/l0v8sIii",
+      features: [
+        "Advance Crypto SIP Guide",
+"Advance Portfolio Management",
+"Spot & Future Trading Call (12 Months)",
+"Advance Fundamental Analysis, Technical Analysis",
+"Online 30 Videos",
+"Risk Management Strategy",
+"Regular PNL Strategy",
+"Basic Liquidation Strategy",
+"Gem Coin Finding Strategy",
+"Premium Future Trading Strategy",
+"Premium Portfolio Management Strategy",
+"Five Long-Term Holding Coins Name",
+"Trading Fund Management Strategy",
+"A To Z Advance Fundamental Analysis, Technical Analysis",
+"Whales Wallet Tracking",
+"Crypto Taxation",
+"Crypto Rules & Knowledge",
+"Dex & Cex Arbitrage Model",
+"Monthly 2% Scholarship"
+      ],
+    },
+     {
+      name: "Monthly Subscription",
+      price: " 944",
+      points: "800",
+      paymentUrl: "https://rzp.io/rzp/yx0C4LX",
+      gold: true,
+      features: [
+        "Monthly Trading Guidance",
+        "Monthly Special Classes",
+        "Expert Advice",
+        "Two Coin Suggestion",
+        "One Special Call",
+        "Trade Call Signals(1 Month)"
+      ],
+    },
 ];
 
 export default function PackagesScreen() {
@@ -104,12 +193,14 @@ export default function PackagesScreen() {
 
                 return (
                     <View key={index} style={styles.card}>
+                    <View style={styles.cardHeader}>
                         <Text style={styles.title}>{course.name}</Text>
 
                         <Text style={styles.price}>
-                            ₹ {course.price} (Incl. GST)
+                            ₹{course.price} (Incl. GST)
                         </Text>
-
+                        </View>
+                        <View style={{marginBottom: 10, flexDirection: 'column', alignItems: 'center'}}>
                         <Text style={styles.points}>
                             🌟 {course.points} Points
                         </Text>
@@ -119,6 +210,7 @@ export default function PackagesScreen() {
                                 {course.subcription} Subscription
                             </Text>
                         )}
+                        </View>
 
                         {visibleFeatures.map((feature, i) => (
                             <Text key={i} style={styles.feature}>
@@ -159,25 +251,35 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: '700',
     },
+    cardHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     price: {
-        fontSize: 16,
+        fontSize: 18,
         marginTop: 6,
+        fontWeight: '700',
     },
     points: {
+        
         color: '#ffae42',
-        fontWeight: '600',
+        fontWeight: '700',
         marginTop: 4,
+        fontSize: 20,
     },
     subscription: {
         fontWeight: '600',
         marginVertical: 6,
+        fontSize: 20,
+        color: '#1e2097ff',
     },
     feature: {
         marginTop: 4,
-        fontSize: 14,
+        fontSize: 17,
     },
     seeMore: {
         marginTop: 8,
@@ -185,7 +287,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     enrollButton: {
-        backgroundColor: '#2563EB',
+        backgroundColor: '#b53f96',
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',

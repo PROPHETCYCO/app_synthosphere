@@ -132,6 +132,13 @@ export default function CustomDrawerContent(props) {
                 )}
                 onPress={() => props.navigation.navigate("Packages")}
               />
+                <DrawerItem
+                label=" New User Registration"
+                icon={({ size }) => ( 
+                  <Ionicons name="person-add-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("Registrationfromuser")}
+              />
 
               <DrawerItem
                 label="Dashboard"
@@ -156,6 +163,35 @@ export default function CustomDrawerContent(props) {
                 )}
                 onPress={() => props.navigation.navigate("Genealogy")}
               />
+              <DrawerItem
+                label="Enrolled Course"
+                icon={({ size }) => (
+                  <Ionicons name="book-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("EnrollCourse")}
+              />
+              <DrawerItem
+                label="Order History"
+                icon={({ size }) => ( 
+                  <Ionicons name="receipt-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("OrderHistory")}
+              />
+              <DrawerItem
+                label="Direct Team"
+                icon={({ size }) => (
+                  <Ionicons name="people-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("DirectTeam")}
+              />
+              <DrawerItem
+                label="Payouts"
+                icon={({ size }) => (
+                  <Ionicons name="wallet-outline" size={size} />
+                )}
+                onPress={() => props.navigation.navigate("Payout")}
+              />
+            
             </>
           )}
         </View>
@@ -204,7 +240,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: "#1e3272ff",
+    backgroundColor: "rgba(24, 29, 129, 1)",
     padding: 20,
     marginHorizontal: -16,
     flexDirection: "row",
@@ -248,13 +284,13 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   login: {
-    backgroundColor: "#2563EB",
+    backgroundColor: "rgba(24, 29, 129, 1)",
   },
   signup: {
-    backgroundColor: "#0EA5E9",
+    backgroundColor: '#b53f96',
   },
   logout: {
-    backgroundColor: "#ef4444",
+    backgroundColor: "#d85353ff",
   },
   buttonText: {
     color: "#fff",

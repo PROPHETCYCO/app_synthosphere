@@ -91,7 +91,7 @@ export default function DashboardScreen() {
             </View>
         );
     }
-
+const directreferralpoints = payoutDetails?.directReferredPoints || 0;
     const referralLink = userDetails.referralLink;
 
     const showCopyHint = () => {
@@ -103,7 +103,7 @@ export default function DashboardScreen() {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Dashboard</Text>
+            {/* <Text style={styles.title}>Dashboard</Text> */}
 
             <View style={styles.grid}>
                 <Card title="User Status" value={userDetails.status} />
@@ -118,12 +118,18 @@ export default function DashboardScreen() {
                     }
                 />
                 <Card title="Direct Team" value={teamDetails?.directReferrals || 0} />
+                <Card title="Current Payout" value={teamDetails?.directReferrals || 0} />
                 <Card title="Total Team" value={teamDetails?.totalDownlineCount || 0} />
                 <Card title="Self Points" value={userDetails.totalSelfPoints || 0} />
-                <Card
-                    title="Referred Points"
+                <Card title="Direct Referred Bonus" value={directreferralpoints} />
+                 <Card title="Level Bonus" value={payoutDetails?.referredPoints - directreferralpoints} />
+                 <Card
+                    title="Current Referred Points"
                     value={payoutDetails?.referralPoint || 0}
                 />
+                 <Card title="Accumulated Bonus" value={`₹${payoutDetails?.totalPoints || 0}`} />
+                   <Card title="Accumulated Referred Point" value={teamDetails?.totalPoints || 0} />
+               
                 <Card title="Current Rank" value={rank} />
             </View>
 
@@ -156,7 +162,9 @@ const Card = ({ title, value }) => (
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
+        padding: 20,
+        marginTop: 30,
+        paddingBottom: 60,
     },
     center: {
         flex: 1,
@@ -175,20 +183,22 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '48%',
-        backgroundColor: '#fff',
-        padding: 14,
+        backgroundColor: '#9c3580',
+        padding: 16,
         borderRadius: 10,
-        marginBottom: 12,
+        marginBottom: 15,
         elevation: 2,
     },
     cardTitle: {
-        fontSize: 13,
-        color: '#555',
+        fontSize: 19,
+        color: '#ffffffff',
+        fontWeight:'600'
     },
     cardValue: {
         fontSize: 16,
         fontWeight: '700',
-        marginTop: 6,
+        marginTop: 8,
+        color: '#ffffffff',
     },
     referralBox: {
         marginTop: 20,
@@ -197,19 +207,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     refTitle: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: '600',
-        marginBottom: 6,
+       
     },
     refLink: {
-        fontSize: 13,
-        color: '#2563EB',
+        fontSize: 16,
+        color: '#040404ff',
     },
     copyBtn: {
         marginTop: 10,
-        backgroundColor: '#2563EB',
-        padding: 10,
-        borderRadius: 8,
+        backgroundColor: '#253debff',
+        padding: 12,
+        borderRadius: 10,
         alignItems: 'center',
     },
     copyText: {

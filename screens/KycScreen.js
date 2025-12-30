@@ -18,7 +18,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
 const API_URL = 'https://backend-test-1-jn83.onrender.com';
-const MAX_IMAGE_SIZE = 1 * 1024 * 1024; // 1 MB
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 export default function KycScreen() {
     const { user, isAuthenticated } = useContext(AuthContext);
@@ -48,33 +48,26 @@ export default function KycScreen() {
     /* ---------- AUTH GUARD ---------- */
     useEffect(() => {
         if (!isAuthenticated) {
-            Alert.alert(
-                'Login Required',
-                'Please login to complete KYC',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () =>
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Login' }],
-                            }),
-                    },
-                ]
-            );
+            Alert.alert('Login Required', 'Please login to complete KYC', [
+                {
+                    text: 'OK',
+                    onPress: () =>
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Login' }],
+                        }),
+                },
+            ]);
         }
     }, [isAuthenticated]);
 
-    /* ---------- FETCH EXISTING KYC ---------- */
+    /* ---------- FETCH ---------- */
     useEffect(() => {
         if (!isAuthenticated || !user?.userId) return;
 
         const fetchDetails = async () => {
             try {
-                setForm((prev) => ({
-                    ...prev,
-                    userId: user.userId,
-                }));
+                setForm((prev) => ({ ...prev, userId: user.userId }));
 
                 const res = await axios.post(
                     `${API_URL}/api/users/full-details`,
@@ -94,16 +87,13 @@ export default function KycScreen() {
         fetchDetails();
     }, [isAuthenticated, user]);
 
-    /* ---------- IMAGE PICKER (SAME AS SIGNUP) ---------- */
+    /* ---------- IMAGE PICK ---------- */
     const pickImage = async () => {
         const { status } =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (status !== 'granted') {
-            Alert.alert(
-                'Permission required',
-                'Please allow photo library access'
-            );
+            Alert.alert('Permission required', 'Please allow photo access');
             return;
         }
 
@@ -116,23 +106,10 @@ export default function KycScreen() {
         if (result.canceled) return;
 
         const asset = result.assets?.[0];
-        if (!asset?.uri) {
-            Alert.alert('Error', 'Unable to read selected image');
-            return;
-        }
-
         const info = await FileSystem.getInfoAsync(asset.uri);
 
-        if (!info.exists) {
-            Alert.alert('Error', 'Image file does not exist');
-            return;
-        }
-
-        if (info.size && info.size > MAX_IMAGE_SIZE) {
-            Alert.alert(
-                'Image too large',
-                'Image must be smaller than 1 MB'
-            );
+        if (info.size > MAX_IMAGE_SIZE) {
+            Alert.alert('Image too large', 'Max size 1 MB');
             return;
         }
 
@@ -151,14 +128,12 @@ export default function KycScreen() {
         }
 
         if (!files.passbookPhoto) {
-            Alert.alert('Error', 'Passbook photo is required');
+            Alert.alert('Error', 'Passbook photo required');
             return;
         }
 
         const data = new FormData();
-        Object.entries(form).forEach(([key, value]) =>
-            data.append(key, value)
-        );
+        Object.entries(form).forEach(([k, v]) => data.append(k, v));
 
         data.append('passbookPhoto', {
             uri: normalizeUri(files.passbookPhoto.uri),
@@ -168,36 +143,23 @@ export default function KycScreen() {
 
         try {
             setSubmitting(true);
-
             const res = await axios.post(
                 `${API_URL}/api/bankdetails/save`,
                 data,
-                {
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }
+                { headers: { 'Content-Type': 'multipart/form-data' } }
             );
 
-            Alert.alert('Success', 'KYC submitted successfully');
+            Alert.alert('Success', 'KYC submitted');
             setBankDetails(res.data.data);
-        } catch (error) {
-            Alert.alert(
-                'Error',
-                error?.response?.data?.message ||
-                error?.message ||
-                'KYC submission failed'
-            );
+        } catch (err) {
+            Alert.alert('Error', err.message);
         } finally {
             setSubmitting(false);
         }
     };
 
-    /* ---------- BLOCK RENDER IF LOGGED OUT ---------- */
     if (!isAuthenticated) return null;
 
-    /* ---------- LOADING ---------- */
     if (loading) {
         return (
             <View style={styles.center}>
@@ -206,90 +168,84 @@ export default function KycScreen() {
         );
     }
 
-    /* ---------- KYC ALREADY SUBMITTED ---------- */
+    /* ---------- STATUS ---------- */
     if (bankDetails) {
         return (
             <View style={styles.center}>
-                <Text style={styles.title}>KYC Status</Text>
-                <Text>User ID: {bankDetails.userId}</Text>
-                <Text>Name: {bankDetails.nameAsPerDocument}</Text>
-                <Text>Status: {bankDetails.status}</Text>
+                <View style={styles.card}>
+                    <Text style={styles.title}>KYC Status</Text>
+                    <Text style={styles.info}>User ID: {bankDetails.userId}</Text>
+                    <Text style={styles.info}>
+                       User Name: {bankDetails.nameAsPerDocument}
+                    </Text>
+                    <Text style={styles.status}>
+                        Status: {bankDetails.status}
+                    </Text>
+                </View>
             </View>
         );
     }
 
-    /* ---------- KYC FORM ---------- */
+    /* ---------- FORM ---------- */
     return (
-        <ScrollView
-            contentContainerStyle={styles.container}
-            keyboardShouldPersistTaps="handled"
-        >
-            <Text style={styles.title}>KYC Verification</Text>
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.card}>
+                <Text style={styles.title}>KYC Verification</Text>
 
-            {[
-                ['Full Name', 'name'],
-                ['Name as per Document', 'nameAsPerDocument'],
-                ['Bank Name', 'bankName'],
-                ['Account Number', 'accountNo'],
-                ['Branch Name', 'branchName'],
-                ['IFSC Code', 'ifscCode'],
-            ].map(([label, key]) => (
-                <TextInput
-                    key={key}
-                    placeholder={label}
-                    style={styles.input}
-                    value={form[key]}
-                    onChangeText={(v) =>
-                        setForm({ ...form, [key]: v })
-                    }
+                {[
+                    ['Full Name', 'name'],
+                    ['Name as per Document', 'nameAsPerDocument'],
+                    ['Bank Name', 'bankName'],
+                    ['Account Number', 'accountNo'],
+                    ['Branch Name', 'branchName'],
+                    ['IFSC Code', 'ifscCode'],
+                ].map(([label, key]) => (
+                    <TextInput
+                        key={key}
+                        placeholder={label}
+                        placeholderTextColor="#9ca3af"
+                        style={styles.input}
+                        value={form[key]}
+                        onChangeText={(v) =>
+                            setForm({ ...form, [key]: v })
+                        }
+                    />
+                ))}
+
+                <UploadButton
+                    label="Upload Passbook Photo"
+                    onPress={pickImage}
+                    file={files.passbookPhoto}
                 />
-            ))}
 
-            <UploadButton
-                label="Upload Passbook Photo"
-                onPress={pickImage}
-                file={files.passbookPhoto}
-                disabled={submitting}
-            />
-
-            <Pressable
-                style={[
-                    styles.submit,
-                    submitting && { opacity: 0.7 },
-                ]}
-                onPress={handleSubmit}
-                disabled={submitting}
-            >
-                {submitting ? (
-                    <ActivityIndicator color="#fff" />
-                ) : (
-                    <Text style={styles.submitText}>Submit KYC</Text>
-                )}
-            </Pressable>
+                <Pressable style={styles.submit} onPress={handleSubmit}>
+                    {submitting ? (
+                        <ActivityIndicator color="#fff" />
+                    ) : (
+                        <Text style={styles.submitText}>Submit KYC</Text>
+                    )}
+                </Pressable>
+            </View>
         </ScrollView>
     );
 }
 
-/* ---------- UPLOAD BUTTON ---------- */
-function UploadButton({ label, onPress, file, disabled }) {
+/* ---------- UPLOAD ---------- */
+function UploadButton({ label, onPress, file }) {
     return (
-        <Pressable
-            style={[
-                styles.upload,
-                disabled && { opacity: 0.6 },
-            ]}
-            onPress={onPress}
-            disabled={disabled}
-        >
+        <Pressable style={styles.upload} onPress={onPress}>
             {file ? (
-                <Image
-                    source={{ uri: file.uri }}
-                    style={styles.preview}
-                />
+                <Image source={{ uri: file.uri }} style={styles.preview} />
             ) : (
-                <Ionicons name="cloud-upload-outline" size={20} />
+                <Ionicons
+                    name="cloud-upload-outline"
+                    size={20}
+                    color="#fff"
+                />
             )}
-            <Text>{file ? 'Change Photo' : label}</Text>
+            <Text style={{ color: '#fff' }}>
+                {file ? 'Change Photo' : label}
+            </Text>
         </Pressable>
     );
 }
@@ -298,49 +254,89 @@ function UploadButton({ label, onPress, file, disabled }) {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+        backgroundColor: '#fdfdfdff',
     },
     center: {
         flex: 1,
-        alignItems: 'center',
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#e9ebefff',
     },
+
+    /* 3D CARD */
+    card: {
+        backgroundColor: '#0d1154',
+        borderRadius: 20,
+        padding: 50,
+        width: '90%',
+
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.35,
+        shadowRadius: 16,
+        elevation: 12,
+    },
+
     title: {
-        fontSize: 22,
+        fontSize: 25,
         fontWeight: '700',
+        color: '#fff',
+        textAlign: 'center',
         marginBottom: 20,
     },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        padding: 12,
-        borderRadius: 8,
-        marginBottom: 12,
+
+    info: {
+        color: '#e5e7eb',
+        marginBottom: 10,
+        fontSize: 20,
     },
+
+    status: {
+        color: '#22c55e',
+        fontWeight: '700',
+        marginTop: 9,
+        fontSize: 19,
+    },
+
+    input: {
+        backgroundColor: 'rgba(255,255,255,0.08)',
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.15)',
+        padding: 12,
+        borderRadius: 10,
+        marginBottom: 12,
+        color: '#fff',
+    },
+
     upload: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
         padding: 12,
         borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 8,
-        marginBottom: 10,
+        borderColor: 'rgba(255,255,255,0.15)',
+        borderRadius: 10,
+        marginBottom: 12,
+        backgroundColor: 'rgba(255,255,255,0.08)',
     },
+
     submit: {
         backgroundColor: '#2563EB',
         padding: 14,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
         marginTop: 10,
     },
+
     submitText: {
         color: '#fff',
         fontWeight: '600',
+        fontSize: 16,
     },
+
     preview: {
         width: 50,
         height: 50,
         borderRadius: 6,
-        marginRight: 8,
     },
 });

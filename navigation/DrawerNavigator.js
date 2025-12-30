@@ -98,7 +98,12 @@ import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import PackagesScreen from '../screens/PackagesScreen';
 import DashboardScreen from '../screens/DashboardScreen';
+import EnrollCourseScreen from '../screens/EnrollcourseScreen';
 import KycScreen from '../screens/KycScreen';
+import OrderHistoryScreen from '../screens/OrderhistoryScreen';
+import DirectTeamScreen from '../screens/DirectTeamScreen';
+import PayoutScreen from '../screens/PayoutScreen';
+import RegistrationfromuserScreen from '../screens/RegistrationfromuserScreen';
 
 import { AuthContext } from '../context/AuthContext';
 import GenealogyScreen from '../screens/GenealogyScreen';
@@ -158,6 +163,11 @@ export default function DrawerNavigator() {
             options={{ title: 'Dashboard' }}
           />
           <Drawer.Screen
+            name="Registrationfromuser"
+            component={RegistrationfromuserScreen}
+            options={{ title: 'User Registration' }}
+          />
+          <Drawer.Screen
             name="Kyc"
             component={KycScreen}
             options={{ title: 'KYC' }}
@@ -167,6 +177,27 @@ export default function DrawerNavigator() {
             component={GenealogyScreen}
             options={{ title: "Genealogy Tree" }}
           />
+          <Drawer.Screen
+            name="EnrollCourse"
+            component={EnrollCourseScreen}
+            options={{ title: 'Enrolled Course' }}
+          />
+          <Drawer.Screen
+            name="OrderHistory"
+            component={OrderHistoryScreen}
+            options={{ title: 'Order History' }}
+          />
+          <Drawer.Screen
+            name="DirectTeam"
+            component={DirectTeamScreen}
+            options={{ title: 'Direct Team' }}
+          />
+          <Drawer.Screen
+            name="Payout"
+            component={PayoutScreen}
+            options={{ title: 'Payouts' }}
+          />
+          
         </>
       )}
     </Drawer.Navigator>

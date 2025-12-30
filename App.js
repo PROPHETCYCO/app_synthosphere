@@ -21,18 +21,27 @@
 
 
 // App.js
+import { StatusBar } from 'expo-status-bar';
 import 'react-native-gesture-handler';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-//import DrawerNavigator from './navigation/DrawerNavigator';
 import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <NavigationContainer theme={DefaultTheme}>
-        <RootNavigator />
-      </NavigationContainer>
-    </AuthProvider>
+    <>
+      {/* Status Bar */}
+      <StatusBar
+        style="dark"          // white icons
+        
+        translucent={false}
+      />
+
+      <AuthProvider>
+        <NavigationContainer theme={DefaultTheme}>
+          <RootNavigator />
+        </NavigationContainer>
+      </AuthProvider>
+    </>
   );
 }

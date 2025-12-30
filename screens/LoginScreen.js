@@ -1,5 +1,5 @@
 // screens/LoginScreen.js
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
     View,
     Text,
@@ -9,9 +9,7 @@ import {
     ActivityIndicator,
     Alert,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -22,9 +20,8 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { isAuthenticated } = useContext(AuthContext);
+    const { isAuthenticated, login } = useContext(AuthContext);
     const navigation = useNavigation();
-    const { login } = useContext(AuthContext);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -46,13 +43,8 @@ export default function LoginScreen() {
 
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    emailOrPhone,
-                    password,
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ emailOrPhone, password }),
             });
 
             const data = await response.json();
@@ -61,9 +53,8 @@ export default function LoginScreen() {
                 throw new Error(data.message || 'Login failed');
             }
 
-            // await AsyncStorage.setItem('token', data.token);
-            // await AsyncStorage.setItem('user', JSON.stringify(data.user));
             await login(data.token, data.user);
+
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'Home' }],
@@ -79,41 +70,46 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            {/* 3D CARD */}
+            <View style={styles.card}>
+                <Text style={styles.title}>Login Here</Text>
 
-            <View style={styles.inputContainer}>
-                <Ionicons name="mail-outline" size={18} color="#6b7280" />
-                <TextInput
-                    placeholder="Email or Phone"
-                    value={emailOrPhone}
-                    onChangeText={setEmailOrPhone}
-                    style={styles.input}
-                    autoCapitalize="none"
-                />
+                <View style={styles.inputContainer}>
+                    <Ionicons name="mail-outline" size={18} color="#000000ff" />
+                    <TextInput
+                        placeholder="Email or Phone"
+                        placeholderTextColor="#000000ff"
+                        value={emailOrPhone}
+                        onChangeText={setEmailOrPhone}
+                        style={styles.input}
+                        autoCapitalize="none"
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Ionicons name="lock-closed-outline" size={18} color="#000000ff" />
+                    <TextInput
+                        placeholder="Password"
+                        placeholderTextColor="#000000ff"
+                        value={password}
+                        onChangeText={setPassword}
+                        style={styles.input}
+                        secureTextEntry
+                    />
+                </View>
+
+                <Pressable
+                    style={styles.button}
+                    onPress={handleLogin}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <ActivityIndicator color="#fff" />
+                    ) : (
+                        <Text style={styles.buttonText}>Login</Text>
+                    )}
+                </Pressable>
             </View>
-
-            <View style={styles.inputContainer}>
-                <Ionicons name="lock-closed-outline" size={18} color="#6b7280" />
-                <TextInput
-                    placeholder="Password"
-                    value={password}
-                    onChangeText={setPassword}
-                    style={styles.input}
-                    secureTextEntry
-                />
-            </View>
-
-            <Pressable
-                style={styles.button}
-                onPress={handleLogin}
-                disabled={loading}
-            >
-                {loading ? (
-                    <ActivityIndicator color="#fff" />
-                ) : (
-                    <Text style={styles.buttonText}>Login</Text>
-                )}
-            </Pressable>
         </View>
     );
 }
@@ -121,38 +117,62 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        padding: 24,
+        backgroundColor: 'rgba(14, 18, 85, 1)' ,
     },
+
+    /* 3D CARD STYLE */
+    card: {
+        backgroundColor: '#dcdfecff',
+        borderRadius: 20,
+        padding: 24,
+
+        // iOS Shadow
+        // shadowColor: '#000',
+        // shadowOffset: { width: 0, height: 10 },
+        
+        // shadowRadius: 15,
+
+        // Android Shadow
+        // elevation: 12,
+    },
+
     title: {
-        fontSize: 24,
+        fontSize: 32,
         fontWeight: '700',
-        marginBottom: 32,
+        color: '#000000ff',
         textAlign: 'center',
+        marginBottom: 28,
     },
+
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#e5e7eb',
-        borderRadius: 8,
+        borderColor: 'rgba(255, 239, 239, 0.15)',
+        borderRadius: 10,
         paddingHorizontal: 12,
         marginBottom: 16,
         height: 48,
+        backgroundColor: 'rgba(16, 34, 113, 0.20)',
     },
+
     input: {
         flex: 1,
         marginLeft: 8,
+        color: '#000000ff',
     },
+
     button: {
-        backgroundColor: '#2563EB',
+        backgroundColor: '#b53f96',
         height: 48,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 12,
+        marginTop: 8,
     },
+
     buttonText: {
         color: '#fff',
         fontWeight: '600',

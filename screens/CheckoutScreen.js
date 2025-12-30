@@ -122,111 +122,193 @@ export default function CheckoutScreen() {
         }
     };
 
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Checkout</Text>
+  
+        return (
+  <ScrollView contentContainerStyle={styles.container}>
+  
 
-            <View style={styles.card}>
-                <Text style={styles.label}>
-                    Course: <Text style={styles.value}>{course.name}</Text>
-                </Text>
+    {/* Course Card */}
+    <View style={styles.courseCard}>
+      <View style={styles.priceRow}>
+      <Text style={styles.courseLabel}>Selected Course</Text>
+      <Text style={styles.courseName}>{course.name}</Text>
+      </View>
 
-                <Text style={styles.label}>
-                    Price: <Text style={styles.value}>₹ {course.price}</Text>
-                </Text>
-            </View>
+      <View style={styles.priceRow}>
+        <Text style={styles.priceLabel}>Total Amount</Text>
+        <Text style={styles.price}>₹ {course.price}</Text>
+      </View>
+    </View>
 
-            <Text style={styles.section}>Billing Details</Text>
+    {/* Billing Section */}
+    <Text style={styles.sectionTitle}>Billing Details</Text>
 
-            <TextInput
-                style={styles.input}
-                value={user.name}
-                editable={false}
-                placeholder="Full Name"
-            />
+    <View style={styles.formCard}>
+      <TextInput
+        style={[styles.input, styles.disabled]}
+        value={user.name}
+        editable={false}
+        placeholder="Full Name"
+      />
 
-            <TextInput
-                style={styles.input}
-                value={user.phone}
-                editable={false}
-                placeholder="Phone"
-            />
+      <TextInput
+        style={[styles.input, styles.disabled]}
+        value={user.phone}
+        editable={false}
+        placeholder="Phone"
+      />
 
-            <TextInput
-                style={styles.input}
-                value={user.email}
-                editable={false}
-                placeholder="Email"
-            />
+      <TextInput
+        style={[styles.input, styles.disabled]}
+        value={user.email}
+        editable={false}
+        placeholder="Email"
+      />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Billing Address"
-                value={address}
-                onChangeText={setAddress}
-            />
+      <TextInput
+        style={[styles.input, styles.address]}
+        placeholder="Billing Address"
+        value={address}
+        onChangeText={setAddress}
+        multiline
+      />
+    </View>
 
-            <Pressable
-                style={styles.payButton}
-                onPress={handleCheckout}
-                disabled={loading}
-            >
-                <Text style={styles.payText}>
-                    {loading ? 'Processing...' : 'Pay Now'}
-                </Text>
-            </Pressable>
-        </ScrollView>
-    );
+    {/* Pay Button */}
+    <Pressable
+      style={({ pressed }) => [
+        styles.payButton,
+        pressed && { opacity: 0.85 },
+      ]}
+      onPress={handleCheckout}
+      disabled={loading}
+    >
+      <Text style={styles.payText}>
+        {loading ? 'Processing Payment...' : `Pay ₹ ${course.price}`}
+      </Text>
+    </Pressable>
+
+    <Text style={styles.footerText}>
+      100% secure payment powered by Razorpay
+    </Text>
+  </ScrollView>
+);
+
+
 }
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-    },
-    center: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: '700',
-        marginBottom: 16,
-    },
-    card: {
-        backgroundColor: '#fff',
-        padding: 14,
-        borderRadius: 10,
-        marginBottom: 16,
-    },
-    label: {
-        fontSize: 16,
-        marginBottom: 6,
-    },
-    value: {
-        fontWeight: '600',
-    },
-    section: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 10,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 12,
-    },
-    payButton: {
-        backgroundColor: '#2563EB',
-        padding: 14,
-        borderRadius: 8,
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    payText: {
-        color: '#fff',
-        fontWeight: '700',
-    },
+
+    const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    backgroundColor: '#F4F6FA',
+  },
+
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 18,
+    color: '#111827',
+  },
+
+  courseCard: {
+    backgroundColor: '#ffffff',
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 20,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+  },
+
+  courseLabel: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginBottom: 6,
+  },
+
+  courseName: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#142fb8ff',
+    marginBottom: 14,
+  },
+
+  priceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  priceLabel: {
+    fontSize: 15,
+    color: '#374151',
+  },
+
+  price: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#8630bf',
+  },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    marginBottom: 12,
+    color: '#111827',
+  },
+
+  formCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 20,
+    elevation: 3,
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: '#d3d8e2ff',
+    borderRadius: 10,
+    padding: 14,
+    fontSize: 15,
+    marginBottom: 14,
+    backgroundColor: '#f2eeeeff',
+    color: '#020306ff',
+  },
+
+  disabled: {
+    backgroundColor: '#F3F4F6',
+    color: '#6B7280',
+  },
+
+  address: {
+    height: 90,
+    textAlignVertical: 'top',
+    // color: '#000000ff',
+  },
+
+  payButton: {
+    backgroundColor: '#2563EB',
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: 'center',
+    elevation: 4,
+  },
+
+  payText: {
+    color: '#ffffff',
+    fontSize: 17,
+    fontWeight: '800',
+  },
+
+  footerText: {
+    textAlign: 'center',
+    marginTop: 14,
+    fontSize: 13,
+    color: '#6B7280',
+  },
+
 });
