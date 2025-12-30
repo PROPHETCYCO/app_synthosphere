@@ -255,12 +255,12 @@ const styles = StyleSheet.create({
   },
   name: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
   },
   statusText: {
     color: "#ccc",
-    fontSize: 12,
+    fontSize: 15,
   },
   menu: {
     marginTop: 8,

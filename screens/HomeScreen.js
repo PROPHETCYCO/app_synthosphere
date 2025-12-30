@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   choosePointText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     marginLeft: 10,
     color: '#111827',

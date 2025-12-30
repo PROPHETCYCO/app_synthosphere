@@ -18,14 +18,14 @@ export default function PayoutScreen() {
 
   useEffect(() => {
     const fetchPayouts = async () => {
-      if (!user?.id) {
+      if (!user?.userId) {
         setLoading(false);
         return;
       }
 
       try {
         const response = await axios.get(
-          `${ROOT_URL}/api/payout/${user.id}`
+          `${ROOT_URL}/api/payout/${user.userId}`
         );
 
         const result = response.data;
@@ -127,13 +127,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 12,
+    fontSize: 16,
   },
   headerRow: {
     flexDirection: 'row',
-    backgroundColor: '#2563eb',
+    backgroundColor: 'rgba(14, 18, 85, 1)',
     paddingVertical: 10,
     borderRadius: 8,
     marginBottom: 8,
+    marginTop: 12,
   },
   headerText: {
     color: '#fff',

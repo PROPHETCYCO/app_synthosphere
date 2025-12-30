@@ -18,14 +18,14 @@ export default function DirectTeamScreen() {
 
   useEffect(() => {
     const fetchDirectTeam = async () => {
-      if (!user?.id) {
+      if (!user?.userId) {
         setLoading(false);
         return;
       }
 
       try {
         const response = await axios.get(
-          `${ROOT_URL}/api/referral/${user.id}`
+          `${ROOT_URL}/api/referral/${user.userId}`
         );
 
         setReferredUsers(response.data.data?.referredUsers || []);
@@ -59,6 +59,7 @@ export default function DirectTeamScreen() {
     <View style={styles.container}>
       {/* Table Header */}
       <View style={styles.headerRow}>
+      <Text style={[styles.headerText, { flex: 1 }]}>S/N</Text>
         <Text style={[styles.headerText, { flex: 1 }]}>User ID</Text>
         <Text style={[styles.headerText, { flex: 2 }]}>Username</Text>
       </View>
@@ -66,8 +67,9 @@ export default function DirectTeamScreen() {
       <FlatList
         data={referredUsers}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item , index}) => (
           <View style={styles.row}>
+          <Text style={[styles.cell, { flex: 1 }]}>{index+1}</Text>
             <Text style={[styles.cell, { flex: 1 }]}>{item.userId}</Text>
             <Text style={[styles.cell, { flex: 2 }]}>{item.name}</Text>
           </View>
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    backgroundColor: '#2563eb',
+    backgroundColor: 'rgba(14, 18, 85, 1)',
     paddingVertical: 12,
     borderRadius: 8,
     marginBottom: 8,
@@ -98,6 +100,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 16,
   },
   row: {
     flexDirection: 'row',
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
   cell: {
     textAlign: 'center',
     color: '#111827',
+    fontSize: 15,
   },
   emptyText: {
     fontSize: 16,

@@ -15,13 +15,16 @@ import { AuthContext } from '../context/AuthContext';
 export default function ProfileScreen() {
    const { user, isAuthenticated } = useContext(AuthContext);
     useEffect(() => {
-        if (!isAuthenticated) return;
+        if (!isAuthenticated) {
+          alert('You are not logged in. Please log in to view your profile.');
+          return;
+        }
     }, [isAuthenticated]);
-     const userId = user.userId;
-     const userName = user.name;
-     const email = user.email;
-     const phone = user.phone;
-     const status = user.status;
+     const userId = user?.userId;
+     const userName = user?.name;
+     const email = user?.email;
+     const phone = user?.phone;
+     const status = user?.status;
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -41,7 +44,7 @@ export default function ProfileScreen() {
       numberOfLines={1}
       ellipsizeMode="tail"
     >
-      Test user
+     {userId ? userName : 'Guest User'}
     </Text>
   </View>
 </LinearGradient>
@@ -49,11 +52,11 @@ export default function ProfileScreen() {
 
       {/* Form */}
      <ScrollView style={styles.profileCard}>
-        <InfoRow label="Name" value={userName} />
-          <InfoRow label="Userid" value={userId} />
-        <InfoRow label="E-mail" value={email} />
-        <InfoRow label="Phone" value={phone} />
-        <InfoRow label="Status" value={status} style={styles.statusBadge} />
+        <InfoRow label="Name" value={userName ? userName : 'Guest User'} />
+          <InfoRow label="Userid" value={userId ? userId : 'Guest User'} />
+        <InfoRow label="E-mail" value={email ? email : 'Guest User'} />
+        <InfoRow label="Phone" value={phone ? phone : 'Guest User'} />
+        <InfoRow label="Status" value={status ? status : 'Guest User'} style={styles.statusBadge} />
       
       </ScrollView>
     </View>
