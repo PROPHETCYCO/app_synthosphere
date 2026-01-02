@@ -12,14 +12,19 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 export default function ProfileScreen() {
    const { user, isAuthenticated } = useContext(AuthContext);
+    const navigation = useNavigation();
     useEffect(() => {
-        if (!isAuthenticated) {
-          alert('You are not logged in. Please log in to view your profile.');
-          return;
-        }
-    }, [isAuthenticated]);
+    if (!isAuthenticated) {
+      alert('You must be logged in to view the profile.');
+     navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    }
+  }, [isAuthenticated])
      const userId = user?.userId;
      const userName = user?.name;
      const email = user?.email;

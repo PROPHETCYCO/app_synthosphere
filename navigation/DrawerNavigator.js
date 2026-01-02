@@ -1,7 +1,7 @@
 
 // navigation/DrawerNavigator.js
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Image, Pressable } from 'react-native';
+import { Image, Pressable , Text} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
 
@@ -31,12 +31,13 @@ function HeaderProfileButton() {
   return (
     <Pressable
       onPress={() => navigation.navigate('Profile')}
-      style={{ marginRight: 16 }}
+      style={{ marginRight: 16, flexDirection: 'row', alignItems: 'center' }}
     >
       <Image
         source={require('../assets/userphoto.png')}
         style={{ width: 30, height: 30, borderRadius: 15 }}
       />
+      <Text style={{ marginLeft: 8, color: '#000000ff', fontSize: 18, fontWeight:600 }}>Login</Text>
     </Pressable>
   );
 }

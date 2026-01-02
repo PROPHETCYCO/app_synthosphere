@@ -33,6 +33,31 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
       </View>
+      {/* crypto section  */}
+      {/* Crypto Courses Section */}
+<View style={styles.cryptoSection}>
+  <View style={styles.cryptoCard}>
+    <Text style={styles.cryptoTitle}>
+      Learn Crypto & Blockchain With Experts
+    </Text>
+
+    <Text style={styles.cryptoText}>
+      At Synthosphere Academy, we offer structured crypto and blockchain
+      courses designed for beginners to advanced learners. Master
+      cryptocurrency trading, DeFi, Web3, smart contracts, and real-world
+      blockchain applications with expert mentorship.
+    </Text>
+
+    <Pressable
+      style={styles.cryptoButton}
+      onPress={() => navigation.navigate('Login')}
+    >
+      <Text style={styles.cryptoButtonText}>View Courses</Text>
+      <Ionicons name="arrow-forward" size={18} color="#fff" />
+    </Pressable>
+  </View>
+</View>
+
       {/* features */}
       {/* Features Section */}
       <View style={styles.featuresSection}>
@@ -351,4 +376,54 @@ const styles = StyleSheet.create({
     height: 260,
     marginTop: 30,
   },
+  cryptoSection: {
+  paddingHorizontal: 20,
+  paddingVertical: 30,
+  backgroundColor: '#fff',
+},
+
+cryptoCard: {
+  backgroundColor: '#f3f4f9',
+  borderRadius: 22,
+  padding: 22,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 8 },
+  shadowOpacity: 0.12,
+  shadowRadius: 12,
+  elevation: 8,
+},
+
+cryptoTitle: {
+  fontSize: 25,
+  fontWeight: '800',
+  color: '#141987',
+  marginBottom: 12,
+  textAlign: 'center',
+},
+
+cryptoText: {
+  fontSize: 15,
+  color: '#374151',
+  lineHeight: 22,
+  textAlign: 'center',
+  marginBottom: 20,
+  textAlign: "justify"
+},
+
+cryptoButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#a03cbcff',
+  paddingVertical: 14,
+  borderRadius: 12,
+},
+
+cryptoButtonText: {
+  color: '#fff',
+  fontSize: 16,
+  fontWeight: '700',
+  marginRight: 8,
+},
+
 });
