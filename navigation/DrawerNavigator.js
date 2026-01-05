@@ -1,7 +1,7 @@
 
 // navigation/DrawerNavigator.js
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Image, Pressable , Text} from 'react-native';
+import { Image, Pressable, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
 
@@ -27,20 +27,39 @@ const Drawer = createDrawerNavigator();
 /* ---------- Header Profile Button ---------- */
 function HeaderProfileButton() {
   const navigation = useNavigation();
+  const { isAuthenticated } = useContext(AuthContext);
+
+  const handlePress = () => {
+    if (!isAuthenticated) {
+      navigation.navigate('Login');
+    } else {
+      navigation.navigate('Profile');
+    }
+  };
 
   return (
     <Pressable
-      onPress={() => navigation.navigate('Profile')}
+      onPress={handlePress}
       style={{ marginRight: 16, flexDirection: 'row', alignItems: 'center' }}
     >
       <Image
         source={require('../assets/userphoto.png')}
         style={{ width: 30, height: 30, borderRadius: 15 }}
       />
-      <Text style={{ marginLeft: 8, color: '#000000ff', fontSize: 18, fontWeight:600 }}>Login</Text>
+      <Text
+        style={{
+          marginLeft: 8,
+          color: '#000',
+          fontSize: 16,
+          fontWeight: '600',
+        }}
+      >
+        Profile
+      </Text>
     </Pressable>
   );
 }
+
 
 /* ---------- Drawer Navigator ---------- */
 export default function DrawerNavigator() {

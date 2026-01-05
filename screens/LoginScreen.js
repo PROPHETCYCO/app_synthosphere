@@ -59,7 +59,14 @@ export default function LoginScreen() {
 
       navigation.reset({
         index: 0,
-        routes: [{ name: "Home" }],
+        routes: [
+          {
+            name: 'Main',
+            params: {
+              screen: 'Home',
+            },
+          },
+        ],
       });
 
       Alert.alert("Success", "Login successful");

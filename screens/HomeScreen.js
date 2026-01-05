@@ -1,5 +1,5 @@
 // screens/HomeScreen.js
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,57 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
+
+const API_URL = 'https://backend-test-1-jn83.onrender.com';
+
+
 export default function HomeScreen({ navigation }) {
+
+  const { user, isAuthenticated } = useContext(AuthContext);
+
+  const handleViewCourses = async () => {
+    // 🔒 Not logged in
+    if (!isAuthenticated) {
+      navigation.navigate('Login');
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${API_URL}/api/users/full-details`,
+        { userId: user.userId }
+      );
+
+      const courseDetails = res.data?.data?.courseDetails;
+
+      if (!courseDetails || !courseDetails.validityEnd) {
+        // ❌ No course found
+        navigation.navigate('Packages');
+        return;
+      }
+
+      const validityEnd = new Date(courseDetails.validityEnd);
+      const today = new Date();
+
+      if (validityEnd > today) {
+        // ✅ Active course
+        navigation.navigate('CourseView');
+      } else {
+        // ❌ Expired course
+        navigation.navigate('Packages');
+      }
+    } catch (error) {
+      console.log('COURSE CHECK ERROR', error);
+      Alert.alert('Error', 'Unable to check course status');
+    }
+  };
+
+
   return (
     <ScrollView style={styles.container}>
       {/* Banner Section */}
@@ -35,28 +83,28 @@ export default function HomeScreen({ navigation }) {
       </View>
       {/* crypto section  */}
       {/* Crypto Courses Section */}
-<View style={styles.cryptoSection}>
-  <View style={styles.cryptoCard}>
-    <Text style={styles.cryptoTitle}>
-      Learn Crypto & Blockchain With Experts
-    </Text>
+      <View style={styles.cryptoSection}>
+        <View style={styles.cryptoCard}>
+          <Text style={styles.cryptoTitle}>
+            Learn Crypto & Blockchain With Experts
+          </Text>
 
-    <Text style={styles.cryptoText}>
-      At Synthosphere Academy, we offer structured crypto and blockchain
-      courses designed for beginners to advanced learners. Master
-      cryptocurrency trading, DeFi, Web3, smart contracts, and real-world
-      blockchain applications with expert mentorship.
-    </Text>
+          <Text style={styles.cryptoText}>
+            At Synthosphere Academy, we offer structured crypto and blockchain
+            courses designed for beginners to advanced learners. Master
+            cryptocurrency trading, DeFi, Web3, smart contracts, and real-world
+            blockchain applications with expert mentorship.
+          </Text>
 
-    <Pressable
-      style={styles.cryptoButton}
-      onPress={() => navigation.navigate('Login')}
-    >
-      <Text style={styles.cryptoButtonText}>View Courses</Text>
-      <Ionicons name="arrow-forward" size={18} color="#fff" />
-    </Pressable>
-  </View>
-</View>
+          <Pressable
+            style={styles.cryptoButton}
+            onPress={handleViewCourses}
+          >
+            <Text style={styles.cryptoButtonText}>View Courses</Text>
+            <Ionicons name="arrow-forward" size={18} color="#fff" />
+          </Pressable>
+        </View>
+      </View>
 
       {/* features */}
       {/* Features Section */}
@@ -377,53 +425,53 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   cryptoSection: {
-  paddingHorizontal: 20,
-  paddingVertical: 30,
-  backgroundColor: '#fff',
-},
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    backgroundColor: '#fff',
+  },
 
-cryptoCard: {
-  backgroundColor: '#f3f4f9',
-  borderRadius: 22,
-  padding: 22,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 8 },
-  shadowOpacity: 0.12,
-  shadowRadius: 12,
-  elevation: 8,
-},
+  cryptoCard: {
+    backgroundColor: '#f3f4f9',
+    borderRadius: 22,
+    padding: 22,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    elevation: 8,
+  },
 
-cryptoTitle: {
-  fontSize: 25,
-  fontWeight: '800',
-  color: '#141987',
-  marginBottom: 12,
-  textAlign: 'center',
-},
+  cryptoTitle: {
+    fontSize: 25,
+    fontWeight: '800',
+    color: '#141987',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
 
-cryptoText: {
-  fontSize: 15,
-  color: '#374151',
-  lineHeight: 22,
-  textAlign: 'center',
-  marginBottom: 20,
-  textAlign: "justify"
-},
+  cryptoText: {
+    fontSize: 15,
+    color: '#374151',
+    lineHeight: 22,
+    textAlign: 'center',
+    marginBottom: 20,
+    textAlign: "justify"
+  },
 
-cryptoButton: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: '#a03cbcff',
-  paddingVertical: 14,
-  borderRadius: 12,
-},
+  cryptoButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#a03cbcff',
+    paddingVertical: 14,
+    borderRadius: 12,
+  },
 
-cryptoButtonText: {
-  color: '#fff',
-  fontSize: 16,
-  fontWeight: '700',
-  marginRight: 8,
-},
+  cryptoButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    marginRight: 8,
+  },
 
 });

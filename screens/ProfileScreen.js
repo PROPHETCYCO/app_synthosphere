@@ -13,56 +13,58 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
+
+
 export default function ProfileScreen() {
-   const { user, isAuthenticated } = useContext(AuthContext);
-    const navigation = useNavigation();
-    useEffect(() => {
+  const { user, isAuthenticated } = useContext(AuthContext);
+  const navigation = useNavigation();
+  useEffect(() => {
     if (!isAuthenticated) {
       alert('You must be logged in to view the profile.');
-     navigation.reset({
+      navigation.reset({
         index: 0,
         routes: [{ name: 'Login' }],
       });
     }
   }, [isAuthenticated])
-     const userId = user?.userId;
-     const userName = user?.name;
-     const email = user?.email;
-     const phone = user?.phone;
-     const status = user?.status;
+  const userId = user?.userId;
+  const userName = user?.name;
+  const email = user?.email;
+  const phone = user?.phone;
+  const status = user?.status;
   return (
     <View style={styles.container}>
       {/* Header */}
-     <LinearGradient
-  colors={['#6A3CBC', '#B83280']}
-  style={styles.header}
->
-  {/* Avatar + Username */}
-  <View style={styles.avatarWrapper}>
-    <Image
-      source={require('../assets/user.png')}
-      style={styles.avatar}
-    />
+      <LinearGradient
+        colors={['#6A3CBC', '#B83280']}
+        style={styles.header}
+      >
+        {/* Avatar + Username */}
+        <View style={styles.avatarWrapper}>
+          <Image
+            source={require('../assets/user.png')}
+            style={styles.avatar}
+          />
 
-    <Text
-      style={styles.userName}
-      numberOfLines={1}
-      ellipsizeMode="tail"
-    >
-     {userId ? userName : 'Guest User'}
-    </Text>
-  </View>
-</LinearGradient>
+          <Text
+            style={styles.userName}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {userId ? userName : 'Guest User'}
+          </Text>
+        </View>
+      </LinearGradient>
 
 
       {/* Form */}
-     <ScrollView style={styles.profileCard}>
+      <ScrollView style={styles.profileCard}>
         <InfoRow label="Name" value={userName ? userName : 'Guest User'} />
-          <InfoRow label="Userid" value={userId ? userId : 'Guest User'} />
+        <InfoRow label="Userid" value={userId ? userId : 'Guest User'} />
         <InfoRow label="E-mail" value={email ? email : 'Guest User'} />
         <InfoRow label="Phone" value={phone ? phone : 'Guest User'} />
         <InfoRow label="Status" value={status ? status : 'Guest User'} style={styles.statusBadge} />
-      
+
       </ScrollView>
     </View>
   );
@@ -81,19 +83,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
   },
-  
+
   header: {
     height: 220,
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingBottom: 40,
   },
- 
-   avatarWrapper: {
+
+  avatarWrapper: {
     alignItems: 'center',
     width: '100%', // keeps avatar centered
   },
- 
+
   avatar: {
     width: 110,
     height: 110,
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 25,
   },
-   userName: {
+  userName: {
     marginTop: 10,
     maxWidth: 220,        // prevents layout shift
     fontSize: 20,
