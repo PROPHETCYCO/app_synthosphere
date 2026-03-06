@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'https://backend-test-1-jn83.onrender.com';
+const API_URL = 'https://api.synthosphereacademy.com';
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 export default function KycScreen() {

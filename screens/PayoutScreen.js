@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-const ROOT_URL = 'https://backend-test-1-jn83.onrender.com';
+const ROOT_URL = 'https://api.synthosphereacademy.com';
 
 export default function PayoutScreen() {
   const { user } = useContext(AuthContext);

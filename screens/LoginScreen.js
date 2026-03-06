@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 
-const API_URL = "https://backend-test-1-jn83.onrender.com/api/users/login";
+const API_URL = "https://api.synthosphereacademy.com/api/users/login";
 
 export default function LoginScreen() {
   const [emailOrPhone, setEmailOrPhone] = useState("");

@@ -13,7 +13,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import RazorpayCheckout from 'react-native-razorpay';
 import { AuthContext } from '../context/AuthContext';
 
-const API_URL = 'https://backend-test-1-jn83.onrender.com';
+const API_URL = 'https://api.synthosphereacademy.com';
 
 export default function CheckoutScreen() {
   const route = useRoute();
@@ -74,7 +74,7 @@ export default function CheckoutScreen() {
         description: course.name,
         image: 'https://synthosphereacademy.com/logo.png',
         currency: 'INR',
-        key: 'rzp_test_Rrt6SRaU3EQgQW', // replace with test key if needed
+        key: 'rzp_live_RSwodshzvv3moq', // replace with test key if needed
         amount: order.amount,
         name: 'Synthosphere Academy',
         order_id: order.id,

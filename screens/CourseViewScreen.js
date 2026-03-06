@@ -13,7 +13,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const ROOT_URL = 'https://backend-test-1-jn83.onrender.com';
+const ROOT_URL = 'https://api.synthosphereacademy.com';
 const { width } = Dimensions.get('window');
 
 export default function CourseViewScreen() {

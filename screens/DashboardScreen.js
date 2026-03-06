@@ -10,7 +10,7 @@ import {
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-const API_URL = 'https://backend-test-1-jn83.onrender.com';
+const API_URL = 'https://api.synthosphereacademy.com';
 
 export default function DashboardScreen() {
     const { user, isAuthenticated } = useContext(AuthContext);

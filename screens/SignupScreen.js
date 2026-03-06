@@ -17,7 +17,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const API_URL = 'https://backend-test-1-jn83.onrender.com/api/users/register';
+const API_URL = 'https://api.synthosphereacademy.com/api/users/register';
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 export default function SignupScreen() {
