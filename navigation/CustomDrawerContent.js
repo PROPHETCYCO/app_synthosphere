@@ -1,5 +1,6 @@
 
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { useContext } from "react";
@@ -8,11 +9,17 @@ import { AuthContext } from "../context/AuthContext";
 export default function CustomDrawerContent(props) {
   const { user, isAuthenticated, logout } = useContext(AuthContext);
 
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={styles.root}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[
+          styles.container,
+          { paddingBottom: insets.bottom + 70 } // 👈 KEY FIX
+        ]}
+        showsVerticalScrollIndicator={false}
       >
         {/* ---------- HEADER ---------- */}
         <View style={styles.header}>
@@ -132,7 +139,12 @@ export default function CustomDrawerContent(props) {
       </DrawerContentScrollView>
 
       {/* ---------- FOOTER ---------- */}
-      <View style={styles.footer}>
+      <View
+        style={[
+          styles.footer,
+          { paddingBottom: insets.bottom } // 👈 FIX FOR NAV BAR
+        ]}
+      >
         {!isAuthenticated ? (
           <>
             <Pressable
@@ -171,7 +183,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1,
+    paddingBottom: 20,
   },
   header: {
     backgroundColor: "rgba(24, 29, 129, 1)",

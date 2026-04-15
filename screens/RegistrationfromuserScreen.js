@@ -12,6 +12,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,6 +22,7 @@ const API_URL = 'https://api.synthosphereacademy.com/api/users/register';
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 export default function RegistrationfromuserScreen() {
+    const insets = useSafeAreaInsets();
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false);
 
@@ -110,7 +112,13 @@ export default function RegistrationfromuserScreen() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            contentContainerStyle={[
+                styles.container,
+                { paddingBottom: insets.bottom + 20 },
+            ]}
+            showsVerticalScrollIndicator={false}
+        >
             {/* 3D CARD */}
             <View style={styles.card}>
                 <Text style={styles.title}>User Registration</Text>
@@ -171,7 +179,7 @@ function UploadButton({ label, onPress, file }) {
 const styles = StyleSheet.create({
     container: {
         padding: 30,
-        
+
         backgroundColor: '#0d1154',
     },
 

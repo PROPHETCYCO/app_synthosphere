@@ -7,6 +7,7 @@ import {
     Pressable,
     Alert,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 
@@ -57,98 +58,99 @@ const courses = [
             'Premium Trading Strategies',
         ],
     },
-     {
-      name: "Teacher Course",
-      price: " 11800 ",
-       subcription: "One year",
-      points: "10000",
-      paymentUrl: "https://rzp.io/rzp/0tfCXyMC",
-      features: [
-        "A To Z Advance Crypto Knowledge",
+    {
+        name: "Teacher Course",
+        price: " 11800 ",
+        subcription: "One year",
+        points: "10000",
+        paymentUrl: "https://rzp.io/rzp/0tfCXyMC",
+        features: [
+            "A To Z Advance Crypto Knowledge",
 
-        "Pro Buy/Sell On Centralized Exchange",
+            "Pro Buy/Sell On Centralized Exchange",
 
-        "Advance Crypto SIP Guide",
+            "Advance Crypto SIP Guide",
 
-        "Advance Portfolio Management",
+            "Advance Portfolio Management",
 
-        "Spot & Future Trading Call (6 Months)",
+            "Spot & Future Trading Call (6 Months)",
 
-        "Advance Fundamental Analysis, Technical Analysis",
+            "Advance Fundamental Analysis, Technical Analysis",
 
-        "Online 27 Videos",
+            "Online 27 Videos",
 
-        "Risk Management Strategy",
+            "Risk Management Strategy",
 
-        "Regular PNL Strategy",
+            "Regular PNL Strategy",
 
-        "Basic Liquidation Strategy",
-        "Gem Coin Finding Strategy",
-        "Premium Future Trading Strategy",
+            "Basic Liquidation Strategy",
+            "Gem Coin Finding Strategy",
+            "Premium Future Trading Strategy",
 
-        "Premium Portfolio Management Strategy",
+            "Premium Portfolio Management Strategy",
 
-        "Five Long-Term Holding Coins Name",
+            "Five Long-Term Holding Coins Name",
 
-        "Trading Fund Management Strategy",
+            "Trading Fund Management Strategy",
 
-        "A To Z Advance Fundamental Analysis, Technical Analysis",
+            "A To Z Advance Fundamental Analysis, Technical Analysis",
 
-        "Whales Wallet Tracking",
+            "Whales Wallet Tracking",
 
-        "Crypto Taxation",
+            "Crypto Taxation",
 
-        "Crypto Rules & Knowledge",
+            "Crypto Rules & Knowledge",
 
-        "DEX & CEX Arbitrage Model",
-      ],
+            "DEX & CEX Arbitrage Model",
+        ],
     },
-       {
-      name: "Pro Teacher Course",
-      price: " 59000",
-      subcription: "One year",
-      points: "25000",
-      paymentUrl: "https://rzp.io/rzp/l0v8sIii",
-      features: [
-        "Advance Crypto SIP Guide",
-"Advance Portfolio Management",
-"Spot & Future Trading Call (12 Months)",
-"Advance Fundamental Analysis, Technical Analysis",
-"Online 30 Videos",
-"Risk Management Strategy",
-"Regular PNL Strategy",
-"Basic Liquidation Strategy",
-"Gem Coin Finding Strategy",
-"Premium Future Trading Strategy",
-"Premium Portfolio Management Strategy",
-"Five Long-Term Holding Coins Name",
-"Trading Fund Management Strategy",
-"A To Z Advance Fundamental Analysis, Technical Analysis",
-"Whales Wallet Tracking",
-"Crypto Taxation",
-"Crypto Rules & Knowledge",
-"Dex & Cex Arbitrage Model",
-"Monthly 2% Scholarship"
-      ],
+    {
+        name: "Pro Teacher Course",
+        price: " 59000",
+        subcription: "One year",
+        points: "25000",
+        paymentUrl: "https://rzp.io/rzp/l0v8sIii",
+        features: [
+            "Advance Crypto SIP Guide",
+            "Advance Portfolio Management",
+            "Spot & Future Trading Call (12 Months)",
+            "Advance Fundamental Analysis, Technical Analysis",
+            "Online 30 Videos",
+            "Risk Management Strategy",
+            "Regular PNL Strategy",
+            "Basic Liquidation Strategy",
+            "Gem Coin Finding Strategy",
+            "Premium Future Trading Strategy",
+            "Premium Portfolio Management Strategy",
+            "Five Long-Term Holding Coins Name",
+            "Trading Fund Management Strategy",
+            "A To Z Advance Fundamental Analysis, Technical Analysis",
+            "Whales Wallet Tracking",
+            "Crypto Taxation",
+            "Crypto Rules & Knowledge",
+            "Dex & Cex Arbitrage Model",
+            "Monthly 2% Scholarship"
+        ],
     },
-     {
-      name: "Monthly Subscription",
-      price: " 944",
-      points: "800",
-      paymentUrl: "https://rzp.io/rzp/yx0C4LX",
-      gold: true,
-      features: [
-        "Monthly Trading Guidance",
-        "Monthly Special Classes",
-        "Expert Advice",
-        "Two Coin Suggestion",
-        "One Special Call",
-        "Trade Call Signals(1 Month)"
-      ],
+    {
+        name: "Monthly Subscription",
+        price: " 944",
+        points: "800",
+        paymentUrl: "https://rzp.io/rzp/yx0C4LX",
+        gold: true,
+        features: [
+            "Monthly Trading Guidance",
+            "Monthly Special Classes",
+            "Expert Advice",
+            "Two Coin Suggestion",
+            "One Special Call",
+            "Trade Call Signals(1 Month)"
+        ],
     },
 ];
 
 export default function PackagesScreen() {
+    const insets = useSafeAreaInsets();
     const navigation = useNavigation();
     const { isAuthenticated, user } = useContext(AuthContext);
     const [expanded, setExpanded] = useState({});
@@ -184,7 +186,16 @@ export default function PackagesScreen() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            contentContainerStyle={[
+                styles.container,
+                {
+                    paddingTop: insets.top,
+                    paddingBottom: insets.bottom + 20,
+                },
+            ]}
+            showsVerticalScrollIndicator={false}
+        >
             {courses.map((course, index) => {
                 const isExpanded = expanded[index];
                 const visibleFeatures = isExpanded
@@ -193,23 +204,23 @@ export default function PackagesScreen() {
 
                 return (
                     <View key={index} style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.title}>{course.name}</Text>
+                        <View style={styles.cardHeader}>
+                            <Text style={styles.title}>{course.name}</Text>
 
-                        <Text style={styles.price}>
-                            ₹{course.price} (Incl. GST)
-                        </Text>
-                        </View>
-                        <View style={{marginBottom: 10, flexDirection: 'column', alignItems: 'center'}}>
-                        <Text style={styles.points}>
-                            🌟 {course.points} Points
-                        </Text>
-
-                        {course.subcription && (
-                            <Text style={styles.subscription}>
-                                {course.subcription} Subscription
+                            <Text style={styles.price}>
+                                ₹{course.price} (Incl. GST)
                             </Text>
-                        )}
+                        </View>
+                        <View style={{ marginBottom: 10, flexDirection: 'column', alignItems: 'center' }}>
+                            <Text style={styles.points}>
+                                🌟 {course.points} Points
+                            </Text>
+
+                            {course.subcription && (
+                                <Text style={styles.subscription}>
+                                    {course.subcription} Subscription
+                                </Text>
+                            )}
                         </View>
 
                         {visibleFeatures.map((feature, i) => (
@@ -265,7 +276,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     points: {
-        
+
         color: '#ffae42',
         fontWeight: '700',
         marginTop: 4,

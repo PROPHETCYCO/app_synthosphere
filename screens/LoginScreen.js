@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 const API_URL = "https://api.synthosphereacademy.com/api/users/login";
 
 export default function LoginScreen() {
+  const insets = useSafeAreaInsets();
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -78,7 +80,15 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: Math.max(insets.top, 20),
+          paddingBottom: Math.max(insets.bottom, 20),
+        },
+      ]}
+    >
       {/* 3D CARD */}
       <View style={styles.card}>
         <Text style={styles.title}>Login Here</Text>

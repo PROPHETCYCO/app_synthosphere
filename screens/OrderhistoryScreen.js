@@ -7,11 +7,13 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 
 const ROOT_URL = 'https://api.synthosphereacademy.com';
 
 export default function OrderHistoryScreen() {
+    const insets = useSafeAreaInsets();
     const { user } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -59,13 +61,21 @@ export default function OrderHistoryScreen() {
     }
 
     return (
-        <View style={styles.container}>
-         
+        <View
+            style={[
+                styles.container,
+                { paddingTop: insets.top },
+            ]}
+        >
+
 
             <FlatList
                 data={orders}
                 keyExtractor={(item) => item._id}
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: insets.bottom + 20,
+                }}
                 renderItem={({ item, index }) => (
                     <View style={styles.card}>
                         <View style={styles.rowBetween}>

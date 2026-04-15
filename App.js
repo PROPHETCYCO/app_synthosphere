@@ -22,6 +22,7 @@
 
 // App.js
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-gesture-handler';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { AuthProvider } from './context/AuthContext';
@@ -29,11 +30,11 @@ import RootNavigator from './navigation/RootNavigator';
 
 export default function App() {
   return (
-    <>
+    <SafeAreaProvider>
       {/* Status Bar */}
       <StatusBar
         style="dark"          // white icons
-        
+
         translucent={false}
       />
 
@@ -42,6 +43,6 @@ export default function App() {
           <RootNavigator />
         </NavigationContainer>
       </AuthProvider>
-    </>
+    </SafeAreaProvider>
   );
 }

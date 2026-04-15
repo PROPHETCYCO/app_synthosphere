@@ -11,6 +11,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +24,7 @@ const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 export default function KycScreen() {
     const { user, isAuthenticated } = useContext(AuthContext);
     const navigation = useNavigation();
+    const insets = useSafeAreaInsets();
 
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -171,12 +173,20 @@ export default function KycScreen() {
     /* ---------- STATUS ---------- */
     if (bankDetails) {
         return (
-            <View style={styles.center}>
+            <View
+                style={[
+                    styles.center,
+                    {
+                        paddingTop: insets.top,
+                        paddingBottom: insets.bottom,
+                    }
+                ]}
+            >
                 <View style={styles.card}>
                     <Text style={styles.title}>KYC Status</Text>
                     <Text style={styles.info}>User ID: {bankDetails.userId}</Text>
                     <Text style={styles.info}>
-                       User Name: {bankDetails.nameAsPerDocument}
+                        User Name: {bankDetails.nameAsPerDocument}
                     </Text>
                     <Text style={styles.status}>
                         Status: {bankDetails.status}
@@ -188,7 +198,16 @@ export default function KycScreen() {
 
     /* ---------- FORM ---------- */
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            contentContainerStyle={[
+                styles.container,
+                {
+                    paddingTop: insets.top + 10,
+                    paddingBottom: insets.bottom + 20,
+                }
+            ]}
+            showsVerticalScrollIndicator={false}
+        >
             <View style={styles.card}>
                 <Text style={styles.title}>KYC Verification</Text>
 
@@ -253,7 +272,9 @@ function UploadButton({ label, onPress, file }) {
 /* ---------- STYLES ---------- */
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 20,
         backgroundColor: '#fdfdfdff',
     },
     center: {

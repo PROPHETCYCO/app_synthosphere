@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
@@ -16,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function ProfileScreen() {
+  const insets = useSafeAreaInsets();
   const { user, isAuthenticated } = useContext(AuthContext);
   const navigation = useNavigation();
   useEffect(() => {
@@ -37,7 +39,10 @@ export default function ProfileScreen() {
       {/* Header */}
       <LinearGradient
         colors={['#6A3CBC', '#B83280']}
-        style={styles.header}
+        style={[
+          styles.header,
+          { paddingTop: insets.top }, // 👈 push below notch
+        ]}
       >
         {/* Avatar + Username */}
         <View style={styles.avatarWrapper}>
@@ -58,7 +63,13 @@ export default function ProfileScreen() {
 
 
       {/* Form */}
-      <ScrollView style={styles.profileCard}>
+      <ScrollView
+        style={styles.profileCard}
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + 20,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
         <InfoRow label="Name" value={userName ? userName : 'Guest User'} />
         <InfoRow label="Userid" value={userId ? userId : 'Guest User'} />
         <InfoRow label="E-mail" value={email ? email : 'Guest User'} />

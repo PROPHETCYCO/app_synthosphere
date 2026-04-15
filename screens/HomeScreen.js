@@ -11,12 +11,15 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 
 const API_URL = 'https://api.synthosphereacademy.com';
 
 
 export default function HomeScreen({ navigation }) {
+
+  const insets = useSafeAreaInsets();
 
   const { user, isAuthenticated } = useContext(AuthContext);
 
@@ -59,7 +62,16 @@ export default function HomeScreen({ navigation }) {
 
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[
+        styles.container,
+        { paddingTop: insets.top } // 👈 top safe area
+      ]}
+      contentContainerStyle={{
+        paddingBottom: insets.bottom + 30 // 👈 bottom safe area
+      }}
+      showsVerticalScrollIndicator={false}
+    >
       {/* Banner Section */}
       <View style={styles.banner}>
         <View style={styles.content}>
@@ -115,7 +127,7 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.featuresGrid}>
           {/* Feature Card 1 */}
           <View style={styles.featureCard}>
-            <View style={[styles.iconCircle, { backgroundColor: 'rgba(143, 87, 247, 1);' }]}>
+            <View style={[styles.iconCircle, { backgroundColor: 'rgba(143, 87, 247, 1)' }]}>
               <Image
                 source={require('../assets/Book.png')}
                 style={styles.featureIcon}

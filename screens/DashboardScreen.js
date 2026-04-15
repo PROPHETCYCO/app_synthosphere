@@ -7,12 +7,16 @@ import {
     Alert,
     Pressable,
 } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const API_URL = 'https://api.synthosphereacademy.com';
 
 export default function DashboardScreen() {
+    const insets = useSafeAreaInsets();
+
     const { user, isAuthenticated } = useContext(AuthContext);
 
     const [userDetails, setUserDetails] = useState(null);
@@ -91,18 +95,22 @@ export default function DashboardScreen() {
             </View>
         );
     }
-const directreferralpoints = payoutDetails?.directReferredPoints || 0;
+    const directreferralpoints = payoutDetails?.directReferredPoints || 0;
     const referralLink = userDetails.referralLink;
 
-    const showCopyHint = () => {
-        Alert.alert(
-            'Copy Referral Link',
-            'Long-press the link to copy it.'
-        );
+    const handleCopy = async () => {
+        await Clipboard.setStringAsync(referralLink);
+        alert("Referral link copied!");
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            contentContainerStyle={[
+                styles.container,
+                { paddingBottom: insets.bottom + 20 } // 👈 dynamic safe spacing
+            ]}
+            showsVerticalScrollIndicator={false}
+        >
             {/* <Text style={styles.title}>Dashboard</Text> */}
 
             <View style={styles.grid}>
@@ -122,27 +130,26 @@ const directreferralpoints = payoutDetails?.directReferredPoints || 0;
                 <Card title="Total Team" value={teamDetails?.totalDownlineCount || 0} />
                 <Card title="Self Points" value={userDetails.totalSelfPoints || 0} />
                 <Card title="Direct Referred Bonus" value={directreferralpoints} />
-                 <Card title="Level Bonus" value={payoutDetails?.referredPoints - directreferralpoints} />
-                 <Card
+                <Card title="Level Bonus" value={payoutDetails?.referredPoints - directreferralpoints} />
+                <Card
                     title="Current Referred Points"
                     value={payoutDetails?.referralPoint || 0}
                 />
-                 <Card title="Accumulated Bonus" value={`₹${payoutDetails?.totalPoints || 0}`} />
-                   <Card title="Accumulated Referred Point" value={teamDetails?.totalPoints || 0} />
-               
+                <Card title="Accumulated Bonus" value={`₹${payoutDetails?.totalPoints || 0}`} />
+                <Card title="Accumulated Referred Point" value={teamDetails?.totalPoints || 0} />
+
                 <Card title="Current Rank" value={rank} />
             </View>
 
             <View style={styles.referralBox}>
                 <Text style={styles.refTitle}>Your Referral Link</Text>
 
-                {/* selectable = native copy support */}
-                <Text style={styles.refLink} selectable>
+                <Text style={styles.refLink} numberOfLines={2}>
                     {referralLink}
                 </Text>
 
-                <Pressable style={styles.copyBtn} onPress={showCopyHint}>
-                    <Text style={styles.copyText}>How to Copy</Text>
+                <Pressable style={styles.copyBtn} onPress={handleCopy}>
+                    <Text style={styles.copyText}>Tap to Copy Link</Text>
                 </Pressable>
             </View>
         </ScrollView>
@@ -163,8 +170,8 @@ const Card = ({ title, value }) => (
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        marginTop: 30,
-        paddingBottom: 60,
+        marginTop: 10,
+        paddingBottom: 20,
     },
     center: {
         flex: 1,
@@ -192,7 +199,7 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 19,
         color: '#ffffffff',
-        fontWeight:'600'
+        fontWeight: '600'
     },
     cardValue: {
         fontSize: 16,
@@ -209,7 +216,7 @@ const styles = StyleSheet.create({
     refTitle: {
         fontSize: 18,
         fontWeight: '600',
-       
+
     },
     refLink: {
         fontSize: 16,

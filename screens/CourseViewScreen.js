@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,6 +18,7 @@ const ROOT_URL = 'https://api.synthosphereacademy.com';
 const { width } = Dimensions.get('window');
 
 export default function CourseViewScreen() {
+    const insets = useSafeAreaInsets();
     const { user, isAuthenticated } = useContext(AuthContext);
     const navigation = useNavigation();
 
@@ -103,7 +105,12 @@ export default function CourseViewScreen() {
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[
+                styles.container,
+                { paddingBottom: insets.bottom + 20 } // 👈 bottom safe area
+            ]}
+        >
             {/* VIDEO PLAYER */}
             <View style={styles.playerWrapper}>
                 <WebView
@@ -136,7 +143,13 @@ export default function CourseViewScreen() {
             <FlatList
                 data={allowedVideos}
                 keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={{ paddingBottom: 20 }}
+                style={{ flex: 1 }} // 👈 IMPORTANT (takes remaining space)
+
+                contentContainerStyle={{
+                    paddingBottom: insets.bottom + 20, // 👈 SAFE AREA FIX
+                }}
+
+                showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <Pressable
                         style={[
@@ -157,7 +170,8 @@ export default function CourseViewScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 12,
+        paddingTop: 12,
+        paddingHorizontal: 12,
         backgroundColor: '#fff',
     },
     center: {

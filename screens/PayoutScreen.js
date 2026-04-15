@@ -7,11 +7,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 
 const ROOT_URL = 'https://api.synthosphereacademy.com';
 
 export default function PayoutScreen() {
+  const insets = useSafeAreaInsets();
   const { user } = useContext(AuthContext);
   const [payouts, setPayouts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,14 @@ export default function PayoutScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: insets.top,
+        },
+      ]}
+    >
       <Text style={styles.warningText}>
         You will receive the payout after deducting 5% TDS.
       </Text>
@@ -76,6 +85,9 @@ export default function PayoutScreen() {
         <FlatList
           data={payouts}
           keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={{
+            paddingBottom: insets.bottom + 20,
+          }}
           renderItem={({ item, index }) => {
             const afterTds = (item.amount - item.amount * 0.05).toFixed(2);
 

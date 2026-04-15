@@ -8,11 +8,13 @@ import {
     ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 
 const ROOT_URL = "https://api.synthosphereacademy.com";
 
 export default function EnrollCourseScreen() {
+    const insets = useSafeAreaInsets();
     const { user } = useContext(AuthContext);
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -62,9 +64,18 @@ export default function EnrollCourseScreen() {
     }
 
     return (
-        <ScrollView style={styles.screen}>
+        <ScrollView
+            style={[
+                styles.screen,
+                { paddingTop: insets.top } // 👈 top safe area
+            ]}
+            contentContainerStyle={{
+                paddingBottom: insets.bottom + 20 // 👈 bottom safe area
+            }}
+            showsVerticalScrollIndicator={false}
+        >
             {/* HEADER */}
-            
+
 
             {/* COURSE CARD */}
             <View style={styles.card}>
@@ -123,11 +134,12 @@ const styles = StyleSheet.create({
     },
 
     /* HEADER */
-  
+
     /* CARD */
     card: {
         backgroundColor: '#fff',
-        margin: 20,
+        marginHorizontal: 20,
+        marginTop: 20,
         padding: 18,
         borderRadius: 16,
 

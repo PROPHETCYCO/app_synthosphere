@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import RazorpayCheckout from 'react-native-razorpay';
 import { AuthContext } from '../context/AuthContext';
@@ -16,6 +17,7 @@ import { AuthContext } from '../context/AuthContext';
 const API_URL = 'https://api.synthosphereacademy.com';
 
 export default function CheckoutScreen() {
+  const insets = useSafeAreaInsets();
   const route = useRoute();
   const navigation = useNavigation();
   const { course } = route.params || {};
@@ -124,7 +126,13 @@ export default function CheckoutScreen() {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { paddingBottom: insets.bottom + 20 } // 👈 dynamic safe spacing
+      ]}
+      showsVerticalScrollIndicator={false}
+    >
 
 
       {/* Course Card */}
@@ -203,6 +211,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#F4F6FA',
+    paddingBottom: 20,
   },
 
   pageTitle: {

@@ -10,12 +10,14 @@ import {
     Alert,
 } from "react-native";
 import axios from "axios";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from "../context/AuthContext";
 
 const API_URL = "https://api.synthosphereacademy.com";
 const userAvatar = require("../assets/userphoto.png");
 
 export default function GenealogyScreen() {
+    const insets = useSafeAreaInsets();
     const { user, isAuthenticated } = useContext(AuthContext);
 
     const [data, setData] = useState(null);
@@ -85,7 +87,16 @@ export default function GenealogyScreen() {
         data?.mainUser?.totalSelfPoints === 0 ? "#d82a2a" : "#3fc83f";
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            contentContainerStyle={[
+                styles.container,
+                {
+                    paddingTop: insets.top + 10,     // 👈 top safe area
+                    paddingBottom: insets.bottom + 20 // 👈 bottom safe area
+                }
+            ]}
+            showsVerticalScrollIndicator={false}
+        >
             {/* ---------- Top Button ---------- */}
             <Pressable style={styles.topButton} onPress={handleGoToTop}>
                 <Text style={styles.topButtonText}>Extreme Top</Text>
@@ -137,7 +148,9 @@ export default function GenealogyScreen() {
 /* ---------- Styles ---------- */
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingTop: 20,     // base spacing (safe area adds extra)
+        paddingBottom: 20,
         alignItems: "center",
     },
     center: {

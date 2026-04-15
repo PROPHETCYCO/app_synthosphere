@@ -7,11 +7,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 
 const ROOT_URL = 'https://api.synthosphereacademy.com';
 
 export default function DirectTeamScreen() {
+  const insets = useSafeAreaInsets();
   const { user } = useContext(AuthContext);
   const [referredUsers, setReferredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,10 +58,15 @@ export default function DirectTeamScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: insets.top + 10 } // 👈 top safe area
+      ]}
+    >
       {/* Table Header */}
       <View style={styles.headerRow}>
-      <Text style={[styles.headerText, { flex: 1 }]}>S/N</Text>
+        <Text style={[styles.headerText, { flex: 1 }]}>S/N</Text>
         <Text style={[styles.headerText, { flex: 1 }]}>User ID</Text>
         <Text style={[styles.headerText, { flex: 2 }]}>Username</Text>
       </View>
@@ -67,9 +74,14 @@ export default function DirectTeamScreen() {
       <FlatList
         data={referredUsers}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item , index}) => (
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + 20, // 👈 bottom safe area
+        }}
+
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item, index }) => (
           <View style={styles.row}>
-          <Text style={[styles.cell, { flex: 1 }]}>{index+1}</Text>
+            <Text style={[styles.cell, { flex: 1 }]}>{index + 1}</Text>
             <Text style={[styles.cell, { flex: 1 }]}>{item.userId}</Text>
             <Text style={[styles.cell, { flex: 2 }]}>{item.name}</Text>
           </View>
@@ -81,7 +93,8 @@ export default function DirectTeamScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 10, // base spacing (safe area handled dynamically)
     backgroundColor: '#f9fafb',
   },
   center: {
